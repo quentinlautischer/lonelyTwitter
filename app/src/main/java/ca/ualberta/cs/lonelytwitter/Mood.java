@@ -26,5 +26,4 @@ public abstract class Mood {
     }
 
     abstract String moodFormat();
-
 }

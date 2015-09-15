@@ -31,21 +31,62 @@ public class LonelyTwitterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		try {
+			Tweet twt = new ImportantTweet("Im a bird or something");
+
+			twt.addMood(new SadMood());
+			String moodTxtAddition = twt.getMoods().iterator().next().moodFormat();
+
+			twt.setText(twt.getText() + moodTxtAddition);
+
+
+		} catch (IOException e) {
+			throw new IllegalArgumentException(e);
+		}
+
+
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
+		Button clearButton = (Button) findViewById(R.id.clear);
+		Button sendButton = (Button) findViewById(R.id.send);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 		tweetList = new ArrayList<Tweet>();
 
-		saveButton.setOnClickListener(new View.OnClickListener() {
-
+		sendButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
 				saveInFile(text, new Date(System.currentTimeMillis()));
+			}
+		});
+
+		clearButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				setResult(RESULT_OK);
+				bodyText.setText("");
+							}
+		});
+
+		saveButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				setResult(RESULT_OK);
+				String text = bodyText.getText().toString();
+
+				Tweet tweet;
+				try {
+					tweet = new ImportantTweet("longer than 140 characters ");
+				} catch (IOException e){
+					throw new RuntimeException(e);
+				}
+					saveInFile(text, new Date(System.currentTimeMillis()));
 				finish();
+
+
+
 
 			}
 		});
+
 	}
 
 	@Override
