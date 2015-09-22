@@ -1,8 +1,11 @@
 package ca.ualberta.cs.lonelytwitter;
 
+import java.util.Date;
+
 /**
- * Created by lautisch on 9/14/15.
+ * Created by joshua2 on 9/16/15.
  */
 public interface Tweetable {
-    public Boolean isImportant();
+    public String getText();
+    public Date getDate();
 }

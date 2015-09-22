@@ -1,37 +1,34 @@
 package ca.ualberta.cs.lonelytwitter;
 
-/**
- * Created by lautisch on 9/14/15.
- */
-
 import java.io.IOException;
 import java.util.Date;
-import java.util.ArrayList;
 
-public abstract class Tweet {
+/**
+ * Created by joshua2 on 9/16/15.
+ */
+public abstract class Tweet extends Object implements Tweetable {
+    private String text;
+    protected Date date;
 
-    protected String text;
-    private Date date;
-
-    private ArrayList<Mood> tweetMoods;
-
-    public ArrayList<Mood> getMoods() {
-        return tweetMoods;
+    public Tweet(String tweet, Date date) throws TweetTooLongException {
+        this.setText(tweet);
+        this.date = date;
     }
 
-    public void addMood(Mood mood) {
-        this.tweetMoods.add(mood);
+    public Tweet(String tweet) throws TweetTooLongException {
+        this.setText(tweet);
+        this.date = new Date();
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) throws IOException {
-        if (text.length() <= 140){
+    public void setText(String text) throws TweetTooLongException {
+        if (text.length() <= 140) {
             this.text = text;
         } else {
-            throw new IOException("Tweet was too long!");
+            throw new TweetTooLongException();
         }
     }
 
@@ -43,24 +40,11 @@ public abstract class Tweet {
         this.date = date;
     }
 
-    public Tweet(String text, Date date) throws IOException{
-        this.setText(text);
-        this.setDate(date);
-        this.tweetMoods = new ArrayList<Mood>();
-
-    }
-
-    public Tweet(String text) {
-        this.text = text;
-        this.date = new Date();
-        this.tweetMoods = new ArrayList<Mood>();
-    }
-
-    public Tweet() {
-        this.date = new Date();
-        this.text = "";
-        this.tweetMoods = new ArrayList<Mood>();
-    }
-
     public abstract Boolean isImportant();
+
+    @Override
+    public String toString() {
+        return date.toString() + " | " + text;
+    }
+
 }
