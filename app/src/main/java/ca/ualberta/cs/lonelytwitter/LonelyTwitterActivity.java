@@ -9,11 +9,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -40,42 +38,25 @@ public class LonelyTwitterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		try {
-			Tweet twt = new ImportantTweet("Im a bird or something");
-
-			twt.addMood(new SadMood());
-			String moodTxtAddition = twt.getMoods().iterator().next().moodFormat();
-
-			twt.setText(twt.getText() + moodTxtAddition);
-
-
-		} catch (IOException e) {
-			throw new IllegalArgumentException(e);
-		}
-
-
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
 		Button clearButton = (Button) findViewById(R.id.clear);
+		Button fullScreen = (Button) findViewById(R.id.fullScreen);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
-		tweetList = new ArrayList<Tweet>();
+		tweets = new ArrayList<Tweet>();
 
-		sendButton.setOnClickListener(new View.OnClickListener() {
+		fullScreen.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(this, FullScreenTweetActivity.class);
+			}
+		});
+
+		saveButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
 				String text = bodyText.getText().toString();
 				tweets.add(new NormalTweet(text));
 				saveInFile();
-				adapter.notifyDataSetChanged();
-			}
-		});
-
-		clearButton.setOnClickListener(new View.OnClickListener() {
-
-			public void onClick(View v) {
-				setResult(RESULT_OK);
-				String text = bodyText.getText().toString();
-				tweets = new ArrayList<Tweet>();
 				adapter.notifyDataSetChanged();
 			}
 		});
