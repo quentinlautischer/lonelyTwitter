@@ -45,12 +45,6 @@ public class LonelyTwitterActivity extends Activity {
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
 		tweets = new ArrayList<Tweet>();
 
-		fullScreen.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Intent intent = new Intent(this, FullScreenTweetActivity.class);
-			}
-		});
-
 		saveButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				setResult(RESULT_OK);
