@@ -1,21 +1,46 @@
 package ca.ualberta.cs.lonelytwitter;
 
 import android.test.ActivityInstrumentationTestCase2;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import java.util.ArrayList;
-import java.util.List;
+
+
 
 /**
  * Created by lautisch on 9/28/15.
  */
-public class TweetListTest extends ActivityInstrumentationTestCase2 {
+public class TweetListTest extends ActivityInstrumentationTestCase2 implements MyObserver {
+    private Boolean wasNotified = Boolean.FALSE;
 
     public TweetListTest() {
         super(ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity.class);
     }
+
+
+    public void myNotify(MyObservable observable){
+        wasNotified = Boolean.TRUE;
+    }
+
+    public void testAddObserver() {
+        TweetList list = new TweetList();
+        list.addObserver(this);
+        wasNotified = Boolean.FALSE;
+        list.add(new NormalTweet("text"));
+        //at this point we expect to be notified!
+        assertTrue(wasNotified);
+
+    }
+
+    public void testTweetObserver(){
+        TweetList list = new TweetList();
+        list.addObserver(this);
+        Tweet tweet = new NormalTweet("test");
+        list.add(tweet);
+        wasNotified = Boolean.FALSE;
+        tweet.setText("diff");
+    }
+
+
+
 
     public void testGetCount() {
         //    getCount() -- should accurately count up the tweets
